@@ -1,0 +1,46 @@
+.footer {
+  display: flex;
+  height: 70px;
+  width: 1440px;
+  background-color: #182028;
+  margin-top: 169px;
+  /* position: fixed; */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.left > p {
+  color: white;
+}
+
+.middle {
+  margin-left: 450px;
+  margin-top: 25px;
+}
+.youtube {
+  color: white;
+}
+
+.twitter {
+  margin-left: 6px;
+}
+
+.facebook {
+  margin-left: 6px;
+}
+
+.right {
+  display: flex;
+  margin-left: 400px;
+}
+.right p {
+  color: white;
+  margin-top: 27px;
+}
+.p2 {
+  margin-left: 20px;
+}
+.p3 {
+  margin-left: 20px;
+}
