@@ -19,6 +19,7 @@ import {
   REMOVE_FROM_CART,
   RECORD_CARD_NUMBER,
   TEST,
+  UPDATE_GUEST_CART,
 } from "../actions/index";
 import { combineReducers } from "redux";
 
@@ -47,6 +48,7 @@ export const refreshpage = (state = 0, { type, payload }) => {
       return state;
   }
 };
+
 export const showReducer = (state = [], { type, payload }) => {
   switch (type) {
     case SHOW_DATA:
@@ -87,8 +89,7 @@ export const showToken = (state = [], { type, payload }) => {
 export const UpdateCartinfo = (state = [], { type, payload }) => {
   switch (type) {
     case UPDATE_CART_FIRSTIME:
-      console.log("here");
-      console.log(payload.data);
+  
       return [...state, ...payload.data];
     // case ADD_SIGNUP:
     //   console.log(payload);
@@ -100,15 +101,24 @@ export const UpdateCartinfo = (state = [], { type, payload }) => {
 export const PersonalCart = (state = [], { type, payload }) => {
   switch (type) {
     case UPDATE_PERSON_CART:
-      return [...state, ...payload.PersonalCart];
+      return payload;
+
+    default:
+      return state;
+  }
+};
+export const GuestCart = (state = [], { type, payload }) => {
+  switch (type) {
+    case UPDATE_GUEST_CART:
+      //console.log(payload);
+      return [...payload];
     default:
       return state;
   }
 };
 
 export const checkSignedIn = (
-  // state = { statelogin: false, isAdmin: false },
-  state = {
+  state = window.localStorage.getItem(SIGNIN_STATUS) ? JSON.parse(window.localStorage.getItem(SIGNIN_STATUS)) : {
     statelogin: false,
     isAdmin: false,
     user: "",
@@ -120,18 +130,16 @@ export const checkSignedIn = (
 ) => {
   switch (type) {
     case SIGNIN_STATUS:
-      console.log("reducer sign in status check:" + payload.status);
-      console.log("reducer isAdmin:" + payload.isAdmin);
-      return {
+      let params = {
         statelogin: payload.status,
         isAdmin: payload.isAdmin,
         user: payload.email,
         product: payload.product,
-        token: payload.token,
-      };
+        token: payload.token
+      }
+      window.localStorage.setItem(SIGNIN_STATUS,JSON.stringify(params))
+      return params
     case SIGNOUT_STATUS:
-      console.log("reducer siout in status check:" + payload.status);
-      // return payload.status;
       return {
         isAdmin: false,
         statelogin: payload.status,
@@ -142,9 +150,12 @@ export const checkSignedIn = (
       return state;
   }
 };
-export const showProduct = (state = [], { type, payload }) => {
+export const showProduct = (
+  state = window.localStorage.getItem(SHOW_PRODUCT) ? JSON.parse(window.localStorage.getItem(SHOW_PRODUCT)) : [] , 
+  { type, payload }) => {
   switch (type) {
     case SHOW_PRODUCT:
+      window.localStorage.setItem(SHOW_PRODUCT,JSON.stringify(payload.allproduct))
       return [...payload.allproduct];
     default:
       return state;
@@ -192,9 +203,7 @@ export const addCartReducer = (
 ) => {
   switch (type) {
     case ADD_CART:
-      // console.log(payload);
       arr = [...state];
-      // console.log(arr);
       const check = (content) => {
         let addingnew = true;
         arr.forEach((e) => {
@@ -211,8 +220,6 @@ export const addCartReducer = (
         }
       };
       check(payload);
-
-      //adding number together
       let totalNum = 0;
       let totalPrice = 0;
       arr.forEach((e) => {
@@ -225,8 +232,6 @@ export const addCartReducer = (
           e.totalPrice = totalPrice;
         }
       });
-      // check({name:'total'})
-
       return arr;
     default:
       return state;
@@ -248,4 +253,5 @@ export default combineReducers({
   islogout,
   CardnumberReducer,
   refreshpage,
+  GuestCart,
 });

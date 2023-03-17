@@ -1,0 +1,272 @@
+
+.cardClassName{
+    text-align: center;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    padding-left: 10%;
+    min-width: 1300px;
+}
+.box {
+    width: 220px;
+    height: 208px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 20px;
+    width: 16%;
+    padding-bottom: 15px;
+  }
+  
+  .image {
+    margin-left: 10px;
+    width: 200px;
+    height: 100px;
+    background: #c4c4c4;
+    margin-top: 8px;
+  }
+  .image:hover {
+    cursor: pointer;
+  }
+  .name > span {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+    margin-left: 10px;
+  }
+  .price {
+    margin-top: 10px;
+  }
+  .price > span {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    color: #111827;
+  }
+  .edit-button1 {
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    width: 102px;
+    height: 26px;
+    background-color: #5048e5;
+    color: white;
+    font-weight: bold;
+  }
+  .edit-button2 {
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    width: 102px;
+    height: 26px;
+    margin-left: 5px;
+  }
+  .buttom-part {
+    margin-top: 5px;
+    display: flex;
+    margin-left: 5px;
+  }
+  .adding-extend {
+    background: #5048e5;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    width: 102px;
+    height: 26px;
+    display: flex;
+  }
+  .number {
+    padding-top: 2px;
+    width: 35px;
+  }
+  .number > span {
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .minus {
+    background-color: #5048e5;
+    color: #cccccc;
+    font-weight: bold;
+    font-size: 20px;
+    height: 26px;
+    width: 35px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add {
+    background-color: #5048e5;
+    border-radius: 5px;
+  
+    color: #cccccc;
+    font-weight: bold;
+    font-size: 20px;
+    height: 26px;
+    width: 35px;
+    border: none;
+    cursor: pointer;
+  }
+  @media only screen and (max-width: 390px) {
+    .box {
+      width: 1220px;
+      height: 1308px;
+      background: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      margin-right: 10px;
+      margin-left: 10px;
+      margin-top: 20px;
+    }
+    .image {
+      margin-left: 10px;
+      width: 1200px;
+      height: 900px;
+      background: #c4c4c4;
+      margin-top: 8px;
+    }
+    .image:hover {
+      cursor: pointer;
+    }
+    .name > span {
+      margin-top: 20px;
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 1400;
+      font-size: 74px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      color: #6b7280;
+      margin-left: 10px;
+    }
+    .price {
+      margin-top: 70px;
+      margin-left: 5px;
+    }
+    .price > span {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 76px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+      color: #111827;
+    }
+    .edit-button1 {
+      background-color: white;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      width: 502px;
+      height: 126px;
+      background-color: #5048e5;
+      color: white;
+      font-weight: bold;
+      font-size: 70px;
+    }
+    .edit-button2 {
+      background-color: white;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      width: 502px;
+      height: 126px;
+      margin-left: 5px;
+      font-size: 70px;
+      margin-left: 100px;
+    }
+    .buttom-part {
+      margin-top: 60px;
+      display: flex;
+      margin-left: 5px;
+    }
+    .adding-extend {
+      background: #5048e5;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      width: 502px;
+      height: 126px;
+      display: flex;
+      font-size: 80px;
+    }
+    .number {
+      padding-top: 20px;
+    }
+    .number > span {
+      color: white;
+      font-size: 70px;
+      top: -9px;
+      left: -120px;
+      font-weight: bold;
+      padding-left: 139px;
+      margin-top: 10px;
+    }
+    .minus {
+      background-color: #5048e5;
+      color: #cccccc;
+      font-weight: bold;
+      font-size: 90px;
+      height: 26px;
+      width: 25px;
+      border: none;
+      border-radius: 5px;
+      margin-left: 50px;
+      margin-top: 15px;
+    }
+    .add {
+      background-color: #5048e5;
+      border-radius: 5px;
+  
+      color: #cccccc;
+      font-weight: bold;
+      font-size: 90px;
+      height: 26px;
+      width: 25px;
+      border: none;
+      margin-left: 130px;
+      margin-top: 20px;
+    }
+  }
+
+  .footer-part {
+    margin-bottom: 100px;
+    height: 30px;
+    width: 300px;
+    margin-top: 30px;
+    text-align: right;
+    width: 93%;
+  }
+  .left-button {
+    height: 30px;
+    background-color: white;
+    border: 1px solid #cccccc;
+  }
+  .right-button {
+    height: 30px;
+    background-color: white;
+    border: 1px solid #cccccc;
+    margin-left: 2px;
+  }
+  .middle-button {
+    height: 30px;
+    width: 30px;
+    background-color: white;
+    border: 1px solid #cccccc;
+    margin-left: 2px;
+  }
+ 
+  

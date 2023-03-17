@@ -1,33 +1,34 @@
 import "./App.css";
-import Header from "./components/Header";
-import Body from "./components/Body";
+import Headers from "./components/Headers";
 import Footer from "./components/Footer";
-import { useSelector } from "react-redux";
 
+import Body from "./pages/body";
+import ModelControl from "./pages/modelControl";
+import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 function App() {
-  const [openCart, setopenCart] = useState(false);
-  const [test, setTest] = useState(0);
+  /**
+   * false login
+   * true  product list
+   */
+  const isclose = useSelector((state) => state.reducer.isclose);
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener("beforeunload", handleTabClose);
+    };
+  }, []);
+
+  const handleTabClose = () => {
+    window.localStorage.clear();
+  };
 
   return (
-    <>
-      <Header
-        className="header"
-        setopenCart={setopenCart}
-        test={test}
-        setTest={setTest}
-      />
-      <Body
-        className="body"
-        setopenCart={setopenCart}
-        openCart={openCart}
-        setTest={setTest}
-        test={test}
-      />
+    <div>
+      <Headers className="header" />
+      {isclose ? <Body className="body" /> : <ModelControl />}
       <Footer className="footer" />
-      {/* </div> */}
-    </>
+    </div>
   );
 }
-
 export default App;

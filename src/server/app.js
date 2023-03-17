@@ -42,7 +42,6 @@ const check = async () => {
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-const product = require("./database/product-model");
 
 var app = express();
 
@@ -215,17 +214,12 @@ app.post("/ifignin", async (req, res) => {
   if (req.body.content != null) {
     const user_email = req.body.content.email;
     const password = req.body.content.password;
-    const result = await user
-      .where("email")
-      .equals(user_email)
-      .where("password")
-      .equals(password);
-
+    const result = await user.where("email").equals(user_email).where("password").equals(password);
     let data = {
       name: result[0].email,
       psw: result[0].password,
     };
-    // console.log(result[0]);
+    console.log(result[0]);
 
     if (result.length != 0) {
       const token = createToken(result[0]._id);
@@ -311,7 +305,7 @@ app.get("/cartproduct", async (req, res) => {
 app.post("/addproduct", async (req, res) => {
   if (req.body !== undefined) {
     // console.log(req.body);
-
+    console.log(req.body.content,'req.body.content')
     const info = new producting({
       name: req.body.content.name,
       description: req.body.content.description,
@@ -321,6 +315,7 @@ app.post("/addproduct", async (req, res) => {
       quantity: req.body.content.quantity,
       id: uuidv4(),
     });
+    console.log(info,'info')
     const newadd = await info.save();
     if (info === newadd) {
       res.status(201).json({
@@ -348,8 +343,10 @@ app.post("/addproduct", async (req, res) => {
 //edit
 app.put("/modProduct", async (req, res) => {
   if (req.body && req.body.content !== undefined) {
+    console.log(req.body.content,'req.body.content')
     const id = req.body.content.id;
     const queryResult = await producting.findOne({ id });
+    console.log(queryResult,'queryResult')
     const { modifiedCount } = await queryResult.updateOne({
       name: req.body.content.name,
       price: req.body.content.price,
@@ -370,7 +367,6 @@ app.put("/modProduct", async (req, res) => {
     });
     return;
   }
-  //error handling
   res.status(404).json({
     error: "failed",
     message: "Input is not valid",
@@ -386,11 +382,13 @@ app.put("/removeCart", async (req, res) => {
     const queryResult = await user.findOne({ email: id });
     // console.log(queryResult.Cart);
     // queryResult.Cart.splice(0, 1);
+    console.log(id,'id')
+    console.log(item,'item')
 
     const { modifiedCount } = await queryResult.update({
       $pull: { Cart: { name: item } },
     });
-    // console.log(modifiedCount);
+    console.log(modifiedCount);
     // if (modifiedCount) {
     if (modifiedCount) {
       res.status("200").json({
@@ -411,18 +409,33 @@ app.put("/removeCart", async (req, res) => {
   });
 });
 
-//personal cart update info
-app.put("/updateCart", async (req, res) => {
+app.put("/removeGuestCart", async (req, res) => {
+  const queryResult = await user.findOne({ email: "guest" });
+
+  const { modifiedCount } = await queryResult.update({
+    $pull: { Cart: {} },
+  });
+  console.log("zero!");
+  if (modifiedCount) {
+    res.status("200").json({
+      message: "update succeed",
+      removeCount: queryResult.Cart[0],
+    });
+    return;
+  }
+
+  return;
+});
+
+app.put("/updateNonloginCart", async (req, res) => {
   if (req.body && req.body.content !== undefined) {
     const name = req.body.content.user;
-
     const cart = req.body.content.cart;
-
     //const queryResult = await user.findOne({ name });
     const result = await user.where("email").equals(name);
     // console.log(queryResult);
-
     // console.log(result[0].Cart);
+
     let exits = false;
 
     if (result) {
@@ -438,18 +451,156 @@ app.put("/updateCart", async (req, res) => {
     if (!exits) {
       result[0].Cart.push(cart);
     }
+    console.log(result[0].Cart);
 
     const { modified } = await result[0].updateOne({
       Cart: result[0].Cart,
     });
+    // console.log(modified);
 
-    if (modified) {
-      res.status("200").json({
-        message: "update succeed",
-        PersonalCart: result[0].Cart,
+    // if (modified) {
+    console.log("in server ok");
+    res.status("200").json({
+      message: "update succeed",
+      NotloginCart: result[0].Cart,
+    });
+    // return;
+    // }
+  }
+});
+
+
+app.post("/updateAllCart", async (req, res) => {
+  if (req.body && req.body.content !== undefined) {
+    const name = req.body.content.user;
+    const cart = req.body.content.cart;
+
+    console.log(cart,'cart')
+    console.log('↓')
+    console.log('↓')
+    console.log(name,'name')
+    console.log('↓')
+    console.log('↓')
+    const result = await user.where("email").equals(name);
+    console.log('↓')
+    console.log('↓')
+    console.log(result,'result')
+
+
+    // let addPrlist = []
+    // let filterList = []
+    // for(let i=0;i<result[0].Cart.length;i++){
+    //   for(let j=0;j<cart.length;j++){
+    //     if(result[0].Cart[i].name === cart[j].name){
+    //       continue
+    //     }
+    //     let params = {
+    //       id:cart[j].id,
+    //       name:cart[j].name,
+    //       number:cart[j].number,
+    //       openAdd:true,
+    //       price:cart[j].price,
+    //       source:cart[j].source,
+    //     }
+    //     let flag = addPrlist.find((v)=>{
+    //       return v.name === params.name
+    //     })
+
+    //     if(!flag){
+    //     addPrlist.push(params)
+    //     }
+    //   }
+    // }
+
+    // if(addPrlist.length > 0){
+    //   console.log(addPrlist,'addPrlist')
+
+    //   console.log(filterList,'filterList')
+
+
+    //   // console.log(result[0].Cart,'result[0].Cart')
+    //   // console.log(info,'info')
+    //   // const newadd = await info.save();
+
+    //   // console.log(newadd,'newadd')
+    // }
+    // console.log('↓')
+    // console.log('↓')
+
+    // if (result) {
+    //   let newCart = JSON.parse(JSON.stringify(result[0].Cart)).map((e) => {
+    //     cart.forEach((v)=>{
+    //       if (e.name == v.name) {
+    //         e.number += v.number;
+    //       }
+    //     })
+    //    return e
+    //   });
+    //   // result[0].Cart = newCart
+    //   console.log(newCart,'newCart')
+    //   console.log(result[0].Cart,'result[0].Cart')
+    // }
+    // console.log('↓')
+    // console.log('↓')
+    const { modified } = await result[0].updateOne({
+      Cart: cart,
+    });
+    console.log(modified,"modified-modified");
+    // // console.log(result[0].Cart,'result[0].Cart-result[0].Cart');
+    res.status("200").json({
+      message: "update succeed",
+      PersonalCart:cart, 
+    });
+  }
+});
+
+//personal cart update info
+app.put("/updateCart", async (req, res) => {
+  // res.status("200").json({
+  //   message: "update succeed",
+  //   removeCount: "hi",
+  // });
+  // return;
+  if (req.body && req.body.content !== undefined) {
+    const name = req.body.content.user;
+    const cart = req.body.content.cart;
+    // console.log(cart);
+    //const queryResult = await user.findOne({ name });
+    const result = await user.where("email").equals(name);
+    // console.log(queryResult);
+    // console.log(result);
+
+    // console.log(result[0].Cart);
+    let exits = false;
+
+    if (result) {
+      // console.log(result[0].Cart);
+      result[0].Cart.forEach((e) => {
+        if (e.name == cart.name) {
+          e.number = cart.number;
+          exits = true;
+          // return;
+        }
       });
-      return;
     }
+
+    if (!exits) {
+      result[0].Cart.push(cart);
+    }
+    // console.log(result[0]["Cart"]);
+
+    const { modified } = await result[0].updateOne({
+      Cart: result[0]["Cart"],
+    });
+    console.log(modified);
+
+    // if (modified) {
+    res.status("200").json({
+      message: "update succeed",
+      PersonalCart: result[0].Cart,
+    });
+    //   return;
+    // }
 
     // res.status("405").json({
     //   message: "update failed",

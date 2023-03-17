@@ -4,10 +4,10 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import "./Product.css";
-function Sort({ setlowtohigh, sethightolow }) {
+export default function Sort({ edit,setlowtohigh, sethightolow }) {
   const [category, setCategory] = React.useState("");
   const handleChange = (e) => {
+    console.log(e.target.value,'e')
     setCategory(e.target.value);
     if (e.target.value == 20) {
       console.log("low - high");
@@ -24,15 +24,20 @@ function Sort({ setlowtohigh, sethightolow }) {
     <>
       <Box sx={{ minWidth: 190 }}>
         <FormControl fullWidth size="small">
-          <InputLabel id="demo-simple-select-label">Sort</InputLabel>
+          <InputLabel id="demo-simple-select-label" className="sort-css">
+            Sort
+          </InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={category}
             label="Age"
             onChange={handleChange}
+            className="sorting_select"
           >
-            <MenuItem value={10}>Last added</MenuItem>
+            <MenuItem value={10} className="lastadd">
+              Last added
+            </MenuItem>
             <MenuItem value={20}>Price: low to high</MenuItem>
             <MenuItem value={30}>Price: high to low</MenuItem>
           </Select>
@@ -41,5 +46,3 @@ function Sort({ setlowtohigh, sethightolow }) {
     </>
   );
 }
-
-export default Sort;

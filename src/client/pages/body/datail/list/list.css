@@ -1,0 +1,122 @@
+.listxxfbox{
+  display: flex;
+}
+.outline {
+    width: 1300px;
+    height: 800px;
+    margin-top: 50px;
+  }
+  .image-part {
+    width: 33%;
+    height: 252px;
+    margin-left: 50px;
+    margin-top: 35px;
+}
+ 
+  .details {
+    margin-left: 50px;
+    margin-top: 50px;
+  }
+  .first {
+    color: gray;
+  }
+  
+  .second {
+    font-size: 30px;
+    color: dimgrey;
+    font-weight: bold;
+  }
+  .third {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
+  .forth {
+    margin-top: -10px;
+    color: "#6B7280";
+  }
+  .add-to-cart {
+    margin-top: 30px;
+    width: 133px;
+    height: 40px;
+    background: #5048e5;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border: none;
+  }
+  .edit {
+    margin-left: 15px;
+    margin-top: 30px;
+    width: 133px;
+    height: 40px;
+    background: "white";
+    border-radius: 5px;
+    font-weight: bold;
+    border: 1px solid gray;
+  }
+  .outstock {
+    background: rgba(234, 61, 47, 0.13);
+    color: red;
+    font-size: small;
+    width: 76px;
+    height: 30px;
+    margin-left: 15px;
+  }
+  .Title-detail {
+    display: flex;
+    cursor: pointer;
+  }
+  .close-detai {
+    position: absolute;
+    right: 10%;
+  }
+  
+  .detail-change-button {
+    display: flex;
+  }
+  
+  .adding-extend-detail {
+    margin-top: 30px;
+    background: #5048e5;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    width: 133px;
+    height: 40px;
+    display: flex;
+    cursor: pointer;
+  }
+  .number-detail {
+    padding-top: 10px;
+  }
+  .number-detail > span {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 32px;
+  }
+  .minus-detail {
+    background-color: #5048e5;
+    color: #cccccc;
+    font-weight: bold;
+    font-size: 30px;
+    height: 26px;
+    width: 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .add-detail {
+    background-color: #5048e5;
+    border-radius: 5px;
+    margin-left: 30px;
+    color: #cccccc;
+    font-weight: bold;
+    font-size: 30px;
+    height: 26px;
+    width: 25px;
+    border: none;
+    margin-top: 3px;
+    cursor: pointer;
+  }
+  

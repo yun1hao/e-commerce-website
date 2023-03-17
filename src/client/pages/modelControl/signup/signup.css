@@ -1,0 +1,207 @@
+.container {
+    width: 500px;
+    height: 400px;
+    background-color: white;
+    border-radius: 6px;
+    margin: 200px auto;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  .container_forget {
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    border-radius: 6px;
+    margin: 200px auto;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  .title {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .title > h2 {
+    margin-left: 140px;
+    margin-top: 40px;
+  }
+  
+  .close_icon {
+    /* margin-left: 85px;
+    margin-top: 10px; */
+    /* right: 10px; */
+    /* margin-left: 30px; */
+    margin-top: 10px;
+    margin-right: 5px;
+  }
+  
+  .close_icon:hover {
+    cursor: pointer;
+  }
+  
+  .input {
+    margin-top: 1px;
+  }
+  
+  .email-input {
+    margin-left: 40px;
+  }
+  
+  .email-input > span {
+    color: gray;
+  }
+  .email-part > input {
+    margin-top: 9px;
+    margin-left: 5px;
+    width: 300px;
+    border: none;
+    outline: none;
+  }
+  
+  .email-part {
+    width: 400px;
+    border: 1px solid #bfbfbf;
+    border-radius: 3px;
+    height: 35px;
+  }
+  .password-input {
+    margin-left: 40px;
+    margin-top: 30px;
+  }
+  .password-input > span {
+    color: gray;
+  }
+  .password-part > input {
+    margin-top: 9px;
+    margin-left: 5px;
+    width: 300px;
+    border: none;
+    outline: none;
+  }
+  .password-part {
+    width: 400px;
+    border: 1px solid #bfbfbf;
+    border-radius: 3px;
+    height: 35px;
+  }
+  .password-part > span {
+    color: #4080bf;
+    margin-left: 40px;
+    font-size: 13px;
+  }
+  
+  .password-part > span:hover {
+    cursor: pointer;
+  }
+  .signin-buttom {
+    margin-top: 30px;
+    position: fixed;
+    /* bottom: 330px; */
+  
+    margin-left: 40px;
+  }
+  .signin-buttom_forget {
+    margin-left: 40px;
+    margin-top: 3%;
+  }
+  .signin-buttom_forget > button {
+    width: 405px;
+    height: 30px;
+    color: white;
+    background-color: cornflowerblue;
+    border: none;
+    border-radius: 3px;
+  }
+  
+  .signin-buttom_forget > button:hover {
+    cursor: pointer;
+  }
+  
+  .signin-buttom > button {
+    width: 405px;
+    height: 30px;
+    color: white;
+    background-color: cornflowerblue;
+    border: none;
+    border-radius: 3px;
+  }
+  .signin-buttom > button:hover {
+    cursor: pointer;
+  }
+  .left {
+    font-size: small;
+    color: gray;
+    margin-left: 40px;
+    margin-top: 15px;
+    display: flex;
+  }
+  .left > span {
+    width: 155px;
+  }
+  .left > a {
+    color: blue;
+    width: 100px;
+  }
+  .left > a:hover {
+    cursor: pointer;
+  }
+  
+  .left > p {
+    color: gray;
+  }
+  .buttom {
+    display: flex;
+    margin-top: 60px;
+  }
+  .right {
+    font-size: small;
+  }
+  .right > a {
+    color: blue;
+    margin-right: 10px;
+    margin-top: 20px;
+  }
+  .rightpart {
+    margin-top: 12px;
+    margin-left: 53px;
+  }
+  .rightpart > a {
+    color: blue;
+    font-size: small;
+  }
+  .rightpart > a:hover {
+    cursor: pointer;
+  }
+  
+  .warning > span {
+    font-size: small;
+    color: red;
+  }
+  .warning_psw > span {
+    font-size: small;
+    color: red;
+    margin-left: 230px;
+  }
+  
+  .link_word {
+    color: gray;
+    font-size: small;
+    /* margin-bottom: 40px; */
+    margin-left: 70px;
+    height: 5%;
+    width: 70%;
+  }
+  
+  .sent_email {
+    display: flex;
+  }
+  
+  .sent_word_part {
+    width: 50%;
+    margin-left: 120px;
+    margin-right: 90px;
+    margin-top: 50px;
+  }
+  
+  .welcome-back-img {
+    width: 100%;
+  }

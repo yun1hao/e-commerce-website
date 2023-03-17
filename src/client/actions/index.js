@@ -19,6 +19,7 @@ export const ISLOGOUT = "islogout";
 export const REMOVE_FROM_CART = "removefromcart";
 export const RECORD_CARD_NUMBER = "recordcardnumber";
 export const TEST = "test";
+export const UPDATE_GUEST_CART = "updateGuestCart";
 
 export const testModel = (dispatch) => (content) => {
   dispatch({
@@ -37,17 +38,39 @@ export const closeModal = (dispatch) => () => {
   });
 };
 export const UpdatePersonCart = (dispatch) => async (content) => {
-  try {
-    const response = await fetch(
-      "/updateCart",
-      ajaxConfigHelper({ content }, "PUT")
-    );
-    // const result = await response.json();
+  return new Promise(async (resolve)=>{
+    const response = await fetch("/updateCart",ajaxConfigHelper({ content }, "PUT"));
     const { message, PersonalCart } = await response.json();
-
     dispatch({
       type: UPDATE_PERSON_CART,
       payload: PersonalCart,
+    });
+    return resolve(PersonalCart)
+  })
+  // try {
+  //   const response = await fetch("/updateCart",ajaxConfigHelper({ content }, "PUT"));
+  //   const { message, PersonalCart } = await response.json();
+  //   dispatch({
+  //     type: UPDATE_PERSON_CART,
+  //     payload: PersonalCart,
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+export const UpdateNotLoginCart = (dispatch) => async (content) => {
+  try {
+    const response = await fetch(
+      "/updateNonloginCart",
+      ajaxConfigHelper({ content }, "PUT")
+    );
+
+    // const result = await response.json();
+    const { message, NotloginCart } = await response.json();
+    console.log(NotloginCart);
+    dispatch({
+      type: UPDATE_GUEST_CART,
+      payload: NotloginCart,
     });
     console.log("ok");
   } catch (error) {
@@ -62,6 +85,22 @@ export const RemovePersonCart = (dispatch) => async (content) => {
       ajaxConfigHelper({ content }, "PUT")
     );
     // const result = await response.json();
+    const { message, removeCount } = await response.json();
+    dispatch({
+      type: REMOVE_FROM_CART,
+      payload: removeCount,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const RemoveGuestCart = (dispatch) => async (content) => {
+  try {
+    const response = await fetch(
+      "/removeGuestCart",
+      ajaxConfigHelper({ content }, "PUT")
+    );
     const { message, removeCount } = await response.json();
 
     dispatch({
@@ -132,11 +171,10 @@ export const signindata = (dispatch) => (data) => {
   });
 };
 export const signupdata = (dispatch) => async (content) => {
-  try {
-    console.log(content);
+  return new Promise(async (resolve)=>{
     const response = await fetch("/add", ajaxConfigHelper({ content, id: 2 }));
     const result = await response.json();
-    const { message, newadd } = await response.json();
+    const { message, newadd } = await response;
 
     dispatch({
       type: ADD_SIGNUP,
@@ -144,9 +182,23 @@ export const signupdata = (dispatch) => async (content) => {
         ...newadd,
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
+    return resolve()
+  })
+  // try {
+  //   console.log(content);
+  //   const response = await fetch("/add", ajaxConfigHelper({ content, id: 2 }));
+  //   const result = await response.json();
+  //   const { message, newadd } = await response.json();
+
+  //   dispatch({
+  //     type: ADD_SIGNUP,
+  //     payload: {
+  //       ...newadd,
+  //     },
+  //   });
+  // } catch (error) {
+  //   // console.log(error);
+  // }
 };
 
 export const tokenpart = (dispatch) => async (e) => {
@@ -166,20 +218,15 @@ export const tokenpart = (dispatch) => async (e) => {
 };
 
 export const checksigninStatus = (dispatch) => async (content) => {
-  try {
+  return new Promise(async (resolve)=>{
     const res = await fetch("/ifignin", ajaxConfigHelper({ content }));
     const result = await res.json();
-
     const status = result.signinStatus.status;
     const email = result.signinStatus.iswho;
     const product = result.signinStatus.product;
     console.log("access");
     console.log(result.accessToken);
-
-    let isAdmin = false;
-    if (email == "ni") {
-      isAdmin = true;
-    }
+    let isAdmin = email == "ni" ? true : false;
     console.log("check in admin:" + isAdmin);
     dispatch({
       type: SIGNIN_STATUS,
@@ -191,9 +238,9 @@ export const checksigninStatus = (dispatch) => async (content) => {
         token: result.accessToken,
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
+    result.signinStatus.isAdmin = isAdmin
+    return resolve(result)
+  })
 };
 
 export const signoutStatus = (dispatch) => async () => {
@@ -232,10 +279,7 @@ export const userlogout1 = (dispatch) => async () => {
 
 export const userlogout = (dispatch) => async (content) => {
   try {
-    const response = await fetch(
-      "/userlogout",
-      ajaxConfigHelper({ content }, "PUT")
-    );
+    const response = await fetch("/userlogout",ajaxConfigHelper({ content }, "PUT"));
     console.log("ko");
     // const result = await response.json();
     // const { message, signoutStatus } = await response.json();
@@ -252,21 +296,35 @@ export const userlogout = (dispatch) => async (content) => {
 };
 
 export const listingProduct = (dispatch) => async () => {
-  try {
+  return new Promise(async (resolve)=>{
     const response = await fetch("/allproduct");
-
-    // const result = await response.json();
     const { message, allproduct } = await response.json();
-    dispatch({
-      type: SHOW_PRODUCT,
-      payload: {
-        allproduct,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
+    let newAllproduct = allproduct.map((v)=>{
+          v.number = 0
+          return v
+    })
+    dispatch({type: SHOW_PRODUCT,payload: {allproduct:newAllproduct}});
+   return resolve(newAllproduct)
+  })
+  // try {
+  //   const response = await fetch("/allproduct");
+  //   const { message, allproduct } = await response.json();
+  //   allproduct.forEach((v)=>{
+  //     v.number = 0
+  //   })
+  //   dispatch({
+  //     type: SHOW_PRODUCT,
+  //     payload: {
+  //       allproduct,
+  //     },
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
+
+
+
 export const ListingCart = (dispatch) => async () => {
   try {
     console.log("refresh");
@@ -286,37 +344,90 @@ export const ListingCart = (dispatch) => async () => {
 };
 
 export const addProductdata = (dispatch) => async (content) => {
-  try {
+  return new Promise(async (resolve)=>{
     console.log(content);
     const response = await fetch("/addproduct", ajaxConfigHelper({ content }));
     // const result = await response.json();
     const { message, newadd } = await response.json();
-
     dispatch({
       type: ADD_PRODUCT,
       payload: {
         ...newadd,
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const modProduct = (dispatch) => async (content) => {
-  try {
-    const response = await fetch(
-      "/modProduct",
-      ajaxConfigHelper({ content }, "PUT")
-    );
-    const result = await response.json();
-    const { message, modifiedCount } = await response.json();
+    return resolve(newadd)
+  })
+  // try {
+  //   console.log(content);
+  //   const response = await fetch("/addproduct", ajaxConfigHelper({ content }));
+  //   // const result = await response.json();
+  //   const { message, newadd } = await response.json();
 
-    dispatch({
-      type: MOD_PRODUCT,
-      payload: { ...modifiedCount },
-    });
-    console.log(result);
-  } catch (error) {
-    console.log(error);
-  }
+  //   dispatch({
+  //     type: ADD_PRODUCT,
+  //     payload: {
+  //       ...newadd,
+  //     },
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+export const updateAllCart = (dispatch) => async (content) => {
+  return new Promise(async (resolve)=>{
+    const response = await fetch("/updateAllCart",ajaxConfigHelper({content}));
+    console.log(response,'responseresponse')
+    const { message, PersonalCart } = await response.json();
+    console.log(PersonalCart,'allproduct')
+    // let newAllproduct = allproduct.map((v)=>{
+    //       v.number = 0
+    //       return v
+    // })
+    // dispatch({type: SHOW_PRODUCT,payload: {allproduct:newAllproduct}});
+   return resolve(PersonalCart)
+  })
+  // try {
+  //   const response = await fetch("/allproduct");
+  //   const { message, allproduct } = await response.json();
+  //   allproduct.forEach((v)=>{
+  //     v.number = 0
+  //   })
+  //   dispatch({
+  //     type: SHOW_PRODUCT,
+  //     payload: {
+  //       allproduct,
+  //     },
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+export const modProduct = (dispatch) => async (content) => {
+  return new Promise(async (resolve)=>{
+    const response = await fetch("/modProduct",ajaxConfigHelper({ content }, "PUT"));
+    const result = await response.json();
+    console.log(response,'response')
+    const { message, modifiedCount } = await response;
+    console.log(modifiedCount,'modifiedCount')
+    // dispatch({
+    //   type: MOD_PRODUCT,
+    //   payload: { ...modifiedCount },
+    // });
+    return resolve()
+  })
+  // try {
+  //   const response = await fetch("/modProduct",ajaxConfigHelper({ content }, "PUT"));
+  //   const result = await response.json();
+  //   const { message, modifiedCount } = await response.json();
+  //   console.log(modifiedCount,'modifiedCount')
+  //   dispatch({
+  //     type: MOD_PRODUCT,
+  //     payload: { ...modifiedCount },
+  //   });
+  //   console.log(result);
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
