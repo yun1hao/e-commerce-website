@@ -131,10 +131,10 @@ export const checkSignedIn = (
   switch (type) {
     case SIGNIN_STATUS:
       let params = {
-        statelogin: payload.status,
+        // statelogin: payload.status,
         isAdmin: payload.isAdmin,
         user: payload.email,
-        product: payload.product,
+        // product: payload.product,
         token: payload.token
       }
       window.localStorage.setItem(SIGNIN_STATUS,JSON.stringify(params))
@@ -155,7 +155,7 @@ export const showProduct = (
   { type, payload }) => {
   switch (type) {
     case SHOW_PRODUCT:
-      window.localStorage.setItem(SHOW_PRODUCT,JSON.stringify(payload.allproduct))
+      // window.localStorage.setItem(SHOW_PRODUCT,JSON.stringify(payload.allproduct))
       return [...payload.allproduct];
     default:
       return state;

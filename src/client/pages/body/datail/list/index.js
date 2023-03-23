@@ -7,7 +7,8 @@ import {
   checksigninStatus,
   recordcardnumber,
   ListingCart,
-  UpdateNotLoginCart
+  UpdateNotLoginCart,
+  
 } from "../../../../actions/index";
 import "./list.css";
 import {SHOW_PRODUCT,SIGNIN_STATUS} from "../../../../store/storeKey"
@@ -16,11 +17,12 @@ import CloseIcon from "@mui/icons-material/Close";
 export default function List({
   productdetail,
   setDetailpage,
-  setEdit
+  setEdit,
+  changeProduct,
+  setProduct
 }) {
   const dispatch = useDispatch();
   const isSignedstatus = useSelector((state) => state.checkSignedIn);  //已登录
-  const showProduct = useSelector((state) => state.showProduct); //未登录
 
   const add = () => {
     if (isSignedstatus.token) {
@@ -35,31 +37,13 @@ export default function List({
         },
       }).then((res)=>{
         productdetail.number++
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:initList(res),
-            token:isSignedstatus.token,
-          },
-        });
+        setProduct(res)
       })
       return
     } else {
       console.log("guest add");
       productdetail.number++
-      let newShowProduct = showProduct.map((v)=>{
-        v.number = v.id === productdetail.id ? productdetail.number : v.number
-        return v
-      })
-      dispatch({
-        type: SHOW_PRODUCT,
-        payload: {
-          allproduct:newShowProduct
-        },
-      });
+      changeProduct(productdetail)
     }
   };
   const minus = () => {
@@ -78,43 +62,15 @@ export default function List({
         },
       }).then((res)=>{
         productdetail.number--
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:initList(res),
-            token:isSignedstatus.token,
-          },
-        });
+        setProduct(res)
       })
      return
    } else {
      console.log("guest minus");
     productdetail.number--
-    let newShowProduct = showProduct.map((v)=>{
-      v.number = v.id === productdetail.id ? productdetail.number : v.number
-      return v
-    })
-    dispatch({
-      type: SHOW_PRODUCT,
-      payload: {
-        allproduct:newShowProduct
-      },
-    });
+    changeProduct(productdetail)
    }
   };
-
-  const initList = (product)=>{
-    let newProduct = showProduct.map((value)=>{
-      product.forEach((item)=>{
-        value.number = value.name === item.name ? item.number : value.number
-      })
-      return value
-    })
-    return newProduct
-  }
 
   return (
     <div className="listxxfbox">

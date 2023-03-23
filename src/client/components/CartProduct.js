@@ -9,11 +9,9 @@ import {
 } from "../actions/index";
 import "./CartProduct.css";
 import {SHOW_PRODUCT,SIGNIN_STATUS} from "../store/storeKey"
-export default function CartProduct({newList}) {
+export default function CartProduct({product,newList,setProduct,changeProduct}) {
   const dispatch = useDispatch();
-
   const isSignedstatus = useSelector((state) => state.checkSignedIn);
-  const showProduct = useSelector((state) => state.showProduct); //未登录
 
   const minus = (item,index) => {
     if (isSignedstatus.token) {
@@ -26,33 +24,13 @@ export default function CartProduct({newList}) {
           openAdd: true,
         },
       }).then((res)=>{
-        item.number--
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:initList(res),
-            token:isSignedstatus.token,
-          },
-        });
-        
+        setProduct(res)
       })
       return
     } else {
       console.log("guest minus");
       item.number--
-      let newShowProduct = showProduct.map((v)=>{
-        v.number = v.name === item.name ? item.number : v.number
-        return v
-      })
-      dispatch({
-        type: SHOW_PRODUCT,
-        payload: {
-          allproduct:newShowProduct
-        },
-      });
+      changeProduct(item)
     }
   };
 
@@ -62,37 +40,17 @@ export default function CartProduct({newList}) {
         user: isSignedstatus.user,
         cart: {
           name: item.name,
-          number: item.number ? item.number + 1 : 1,
+          number: item.number + 1,
           price: item.price,
           openAdd: true,
-          source: item.source,
         },
       }).then((res)=>{
-        item.number++
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:initList(res),
-            token:isSignedstatus.token,
-          },
-        });
+        setProduct(res)
       })
       return
     } else {
       item.number++
-      let newShowProduct = showProduct.map((v)=>{
-        v.number = v.name === item.name ? item.number : v.number
-        return v
-      })
-      dispatch({
-        type: SHOW_PRODUCT,
-        payload: {
-          allproduct:newShowProduct
-        },
-      });
+      changeProduct(item)
     }
   };
 
@@ -101,47 +59,20 @@ export default function CartProduct({newList}) {
         RemovePersonCart(dispatch)({
           user: isSignedstatus.user,
           removeitem: item.name,
-        });
-        item.number = 0
-        let removeList = isSignedstatus.product.map((v)=>{
-          v.number = item.name === v.name ? item.number : v.number
-          return v
+        }).then(()=>{
+          item.number = 0
+          let removeList = product.map((v)=>{
+            v.number = item.id === v.id ? item.number : v.number
+            return v
+          })
+          setProduct(removeList)
         })
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:removeList,
-            token:isSignedstatus.token,
-          },
-        });
       return
     }else{
       item.number = 0
-      let newShowProduct = showProduct.map((v)=>{
-        v.number = v.name === item.name ? item.number : v.number
-        return v
-      })
-      dispatch({
-        type: SHOW_PRODUCT,
-        payload: {
-          allproduct:newShowProduct
-        },
-      });
+      changeProduct(item)
     }
   };
-
-  const initList = (product)=>{
-    let newProduct = showProduct.map((value)=>{
-      product.forEach((item)=>{
-        value.number = value.name === item.name ? item.number : value.number
-      })
-      return value
-    })
-    return newProduct
-  }
 
   return (
     <div>

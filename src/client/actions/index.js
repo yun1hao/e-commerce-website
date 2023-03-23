@@ -79,7 +79,7 @@ export const UpdateNotLoginCart = (dispatch) => async (content) => {
 };
 
 export const RemovePersonCart = (dispatch) => async (content) => {
-  try {
+  return new Promise(async (resolve)=>{
     const response = await fetch(
       "/removeCart",
       ajaxConfigHelper({ content }, "PUT")
@@ -90,9 +90,22 @@ export const RemovePersonCart = (dispatch) => async (content) => {
       type: REMOVE_FROM_CART,
       payload: removeCount,
     });
-  } catch (error) {
-    console.log(error);
-  }
+    return resolve()
+  })
+  // try {
+  //   const response = await fetch(
+  //     "/removeCart",
+  //     ajaxConfigHelper({ content }, "PUT")
+  //   );
+  //   // const result = await response.json();
+  //   const { message, removeCount } = await response.json();
+  //   dispatch({
+  //     type: REMOVE_FROM_CART,
+  //     payload: removeCount,
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 export const RemoveGuestCart = (dispatch) => async (content) => {
@@ -112,6 +125,27 @@ export const RemoveGuestCart = (dispatch) => async (content) => {
     console.log(error);
   }
 };
+
+export const EditProducts = (dispatch) => async (content) => {
+  try {
+    const response = await fetch(
+      "/editProducts",
+      ajaxConfigHelper({ content }, "PUT")
+    );
+    const { message, PersonalCart } = await response.json(); 
+
+    console.log(PersonalCart,'PersonalCart')
+
+    // dispatch({
+    //   type: REMOVE_FROM_CART,
+    //   payload: removeCount,
+    // });
+    console.log("ok");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 export const updateCart = (dispatch) => (data) => {
   dispatch({
@@ -234,7 +268,7 @@ export const checksigninStatus = (dispatch) => async (content) => {
         status,
         isAdmin,
         email,
-        product,
+        // product,
         token: result.accessToken,
       },
     });
@@ -326,21 +360,32 @@ export const listingProduct = (dispatch) => async () => {
 
 
 export const ListingCart = (dispatch) => async () => {
-  try {
-    console.log("refresh");
-    const response = await fetch("/cartproduct");
-    // const result = await response.json();
+  return new Promise(async (resolve)=>{
+      const response = await fetch("/cartproduct");
+      const { message, curruser } = await response.json();
+      dispatch({
+        type: GET_CARTINFO,
+        payload: {
+          curruser,
+        },
+      });
+      return resolve(curruser.Cart)
+  })
+  // try {
+  //   console.log("refresh");
+  //   const response = await fetch("/cartproduct");
+  //   // const result = await response.json();
 
-    const { message, curruser } = await response.json();
-    dispatch({
-      type: GET_CARTINFO,
-      payload: {
-        curruser,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  //   const { message, curruser } = await response.json();
+  //   dispatch({
+  //     type: GET_CARTINFO,
+  //     payload: {
+  //       curruser,
+  //     },
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
 };
 
 export const addProductdata = (dispatch) => async (content) => {
@@ -356,6 +401,39 @@ export const addProductdata = (dispatch) => async (content) => {
       },
     });
     return resolve(newadd)
+  })
+  // try {
+  //   console.log(content);
+  //   const response = await fetch("/addproduct", ajaxConfigHelper({ content }));
+  //   // const result = await response.json();
+  //   const { message, newadd } = await response.json();
+
+  //   dispatch({
+  //     type: ADD_PRODUCT,
+  //     payload: {
+  //       ...newadd,
+  //     },
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
+
+
+export const addAllproduct = (dispatch) => async (content) => {
+  return new Promise(async (resolve)=>{
+    console.log(content);
+    const response = await fetch("/addAllproduct", ajaxConfigHelper({ content }));
+    // const result = await response.json();
+    const { message, data } = await response.json();
+    console.log(data,'dd')
+    // dispatch({
+    //   type: ADD_PRODUCT,
+    //   payload: {
+    //     ...newadd,
+    //   },
+    // });
+    return resolve(data)
   })
   // try {
   //   console.log(content);

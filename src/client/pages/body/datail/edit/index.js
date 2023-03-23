@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { addProductdata, modProduct,listingProduct } from "../../../../actions/index";
+import { addProductdata, modProduct,listingProduct,EditProducts,addAllproduct } from "../../../../actions/index";
 import { useDispatch,useSelector } from "react-redux";
 import {SHOW_PRODUCT,SIGNIN_STATUS} from "../../../../store/storeKey"
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,7 +9,9 @@ export default function Edit({
   productdetail,
   setEdit,
   showAddProduct,
-  setShowAddProduct
+  setShowAddProduct,
+  product,
+  setProduct
  }) {
   const dispatch = useDispatch();
   const [imgesource, setimgesource] = useState(showAddProduct ? '' : productdetail.source);
@@ -20,10 +22,7 @@ export default function Edit({
   const [editQuantity, setEditQuantity] = useState(showAddProduct ? '' : productdetail.quantity);
   const [editLink, setEditLink] = useState(showAddProduct ? '' : productdetail.source);
   const [id, setId] = useState(productdetail.id);
-
   const isSignedstatus = useSelector((state) => state.checkSignedIn);
-
-  const showProduct = useSelector((state) => state.showProduct); //未登录
 
   const editconTent = {
     id: id,
@@ -53,18 +52,13 @@ export default function Edit({
     addProductdata(dispatch)(editconTent).then((res)=>{
       editconTent.id = res.id
       editconTent.number = 0
-      isSignedstatus.product.push(editconTent)
-      dispatch({
-        type: SIGNIN_STATUS,
-        payload: {
-          status:isSignedstatus.statelogin,
-          isAdmin:isSignedstatus.isAdmin,
-          email:isSignedstatus.user,
-          product:isSignedstatus.product,
-          token:isSignedstatus.token,
-        },
-      });
-      listingProduct(dispatch)().then((resolut)=>{
+      product.push(editconTent)
+      addAllproduct(dispatch)({
+        user: isSignedstatus.user,
+        cart:product
+      }).then((resolut)=>{
+        console.log(resolut,'resolut')
+        setProduct(resolut)
         setEdit(false)
         setShowAddProduct(false)
       })
@@ -73,50 +67,36 @@ export default function Edit({
 
   const editing = () => {
     if(isSignedstatus.token){
-      let newshowProduct = isSignedstatus.product.map((v)=>{
-        v.category = v.id === editconTent.id && v.category != editconTent.category ? editconTent.category : v.category
-        v.description = v.id === editconTent.id && v.description != editconTent.description ? editconTent.description : v.description
-        v.name = v.id === editconTent.id && v.name != editconTent.name ? editconTent.name : v.name
-        v.price = v.id === editconTent.id && v.price != editconTent.price ? editconTent.price : v.price
-        v.quantity = v.id === editconTent.id && v.quantity != editconTent.quantity ? editconTent.quantity : v.quantity
-        v.source = v.id === editconTent.id && v.source != editconTent.source ? editconTent.source : v.source
-        return v
-      })
-      modProduct(dispatch)(editconTent).then(()=>{
-        dispatch({
-          type: SIGNIN_STATUS,
-          payload: {
-            status:isSignedstatus.statelogin,
-            isAdmin:isSignedstatus.isAdmin,
-            email:isSignedstatus.user,
-            product:newshowProduct,
-            token:isSignedstatus.token,
-          },
-        });
+      EditProducts(dispatch)({
+        user:isSignedstatus.user,
+        cart:editconTent
+      }).then((res)=>{
+        setProduct(changDataList(product,editconTent))
         setEdit(false)
-        setShowAddProduct(false)
+          setShowAddProduct(false)
       })
       return
     }else{
-      let newshowProduct = showProduct.map((v)=>{
-        v.category = v.id === editconTent.id && v.category != editconTent.category ? editconTent.category : v.category
-        v.description = v.id === editconTent.id && v.description != editconTent.description ? editconTent.description : v.description
-        v.name = v.id === editconTent.id && v.name != editconTent.name ? editconTent.name : v.name
-        v.price = v.id === editconTent.id && v.price != editconTent.price ? editconTent.price : v.price
-        v.quantity = v.id === editconTent.id && v.quantity != editconTent.quantity ? editconTent.quantity : v.quantity
-        v.source = v.id === editconTent.id && v.source != editconTent.source ? editconTent.source : v.source
-        return v
-      })
-      dispatch({
-        type: SHOW_PRODUCT,
-        payload: {
-          allproduct:newshowProduct
-        },
-      });
+      modProduct(dispatch)(editconTent).then(()=>{
+      setProduct(changDataList(product,editconTent))
       setEdit(false)
       setShowAddProduct(false)
+      })
     }
   };
+
+  const changDataList = (data,editconTent)=>{
+    let newshowProduct = data.map((v)=>{
+      v.category = v.id === editconTent.id && v.category != editconTent.category ? editconTent.category : v.category
+      v.description = v.id === editconTent.id && v.description != editconTent.description ? editconTent.description : v.description
+      v.name = v.id === editconTent.id && v.name != editconTent.name ? editconTent.name : v.name
+      v.price = v.id === editconTent.id && v.price != editconTent.price ? editconTent.price : v.price
+      v.quantity = v.id === editconTent.id && v.quantity != editconTent.quantity ? editconTent.quantity : v.quantity
+      v.source = v.id === editconTent.id && v.source != editconTent.source ? editconTent.source : v.source
+      return v
+    })
+    return newshowProduct
+  }
 
   return (
     <>

@@ -18,7 +18,7 @@ import {
 } from "../../actions/index";
 
 export default function ModelControl({
-
+  product
 }) {
 
   const [showforget, setShowForget] = useState(false); //忘记密码
@@ -38,20 +38,11 @@ export default function ModelControl({
 
   return (
     <div>
-      {/* {
-        showLogin ? <Login  title="Sign in to your account" setSingUp={setSingUp} setForgotPassword={setForgotPassword} />
-        : showSignup ? <Signup setSingin={setSingin} setSingUp={setSingUp} title="Sign up to your account" set setShowSignup={setShowSignup} />
-        : <UpdatePassword />
-      } */}
       {
-        !showSignup && !showforget ? <Login  title="Sign in to your account" setSingUp={setSingUp} setForgotPassword={setForgotPassword} />
+        !showSignup && !showforget ? <Login product={product}  title="Sign in to your account" setSingUp={setSingUp} setForgotPassword={setForgotPassword} />
         : showSignup ? <Signup setSingin={setSingin} setSingUp={setSingUp} title="Sign up to your account" set setShowSignup={setShowSignup} />
         :  <UpdatePassword /> 
-        //  : <Login  title="Sign in to your account" setSingUp={setSingUp} setForgotPassword={setForgotPassword} />
       }
-      {/* {
-        showforget ? <UpdatePassword /> : <Login  title="Sign in to your account" setSingUp={setSingUp} setForgotPassword={setForgotPassword} />
-      } */}
     </div>
   );
 }

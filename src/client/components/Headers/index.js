@@ -23,34 +23,22 @@ import {
   listingProduct
 } from "../../actions/index";
 
-export default function Headers({  }) {
+export default function Headers({ product,setProduct,changeProduct }) {
   const dispatch = useDispatch();
   const isSignedstatus = useSelector((state) => state.checkSignedIn); //登录
-  const showProduct = useSelector((state) => state.showProduct); //未登录
   const [openCart,setopenCart] = useState(false)
   const [code, setCode] = useState("");
   const [discount, setDicount] = useState(0);
   const [estimate, setEstimate] = useState(0);
   let totalNum = 0
   let totalPrice = 0
-  let newList = []
-  if (isSignedstatus.token) {
-    newList = isSignedstatus.product.filter((v)=>{
-      return v.number > 0
-    })
-        newList.forEach((e) => {
-            totalNum +=  e.number;
-            totalPrice = totalPrice + e.price * e.number;
-          });
-  } else {
-    newList = showProduct.length > 0 ? showProduct.filter((v)=>{
-      return v.number > 0
-    }) : []
-    newList.forEach((e) => {
+  let newList = product.filter((v)=>{
+    return v.number > 0
+  })
+    product.forEach((e) => {
       totalNum +=  e.number;
       totalPrice = totalPrice + e.price * e.number;
     })
-  }
   
   const applyDiscount = () => {
  
@@ -62,9 +50,7 @@ export default function Headers({  }) {
     window.localStorage.clear()
     window.location.href = "/"
   };
-
   const tax = (totalPrice * 0.0968).toFixed(2);
-
   return (
     <div>
       <div className="headerContainer">
@@ -90,7 +76,6 @@ export default function Headers({  }) {
           <div
             className="cart"
             onClick={() => {
-              console.log(newList,'newList')
               if(!newList || newList.length <= 0){
                 alert("请先添加数据")
                 return
@@ -131,7 +116,7 @@ export default function Headers({  }) {
           <div className="Product-list">
             {
                     (
-                      <CartProduct newList={newList} />
+                      <CartProduct product={product} newList={newList} setProduct={setProduct}  changeProduct={changeProduct} />
                     )
                 }
           </div>
